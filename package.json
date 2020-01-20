@@ -1,4 +1,3 @@
-// "start": "nodemon index.js --exec babel-node",
 {
   "name": "minimal-gql",
   "version": "1.0.0",
