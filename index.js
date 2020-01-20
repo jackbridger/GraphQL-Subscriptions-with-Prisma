@@ -5,24 +5,12 @@ const pubsub = new PubSub();
 // constant used to connect publish with asyncIterator
 const TODOS_CHANGED = "TODOS_CHANGED"
 // Generate a random id for our ToDos
-const createRandomId = () => {
-    const randID = Math.floor(Math.random() * 1000000);
-    return `${randID}`;
-}
-// Very simple database substitute containing our To Dos.
-const db = {
-    toDos:
-        [{
-            id: createRandomId(),
-            title: "buy bread"
-        },
-        {
-            id: createRandomId(),
-            title: "buy milk"
-        }]
-};
 
-const prisma = new Prisma({ typeDefs: "./prisma-to-do/generated/prisma.graphql", endpoint: "http://localhost:4466/" })
+const prisma = new Prisma({
+    typeDefs: "./prisma-to-do/generated/prisma.graphql",
+    endpoint: "https://eu1.prisma.sh/jack-bridger-418b15/demo/dev"
+    // endpoint: "http://localhost:4466/"
+})
 
 
 // The schema for our graphQL operations and our custom types
@@ -44,16 +32,15 @@ type ToDo {
 
 `
 
-function newToDoSubscribe(parent, args, { prisma }, info) {
-    return prisma.subscribe.toDo({}).node()
-}
 
 // How we handle graphQL operations from the front end
 const resolvers = {
     Query: {
         // Return all To Dos
-        toDos: (parent, args, { prisma }, info) => {
-            return prisma.query.toDoes({}, info)
+        toDos: async (parent, args, { prisma }, info) => {
+            const allToDos = await prisma.query.toDoes({}, info)
+            return allToDos
+
         }
     },
     Mutation: {
@@ -64,6 +51,7 @@ const resolvers = {
                     title
                 }
             })
+            console.log(newToDo)
             pubsub.publish(TODOS_CHANGED, { ToDoChanged: newToDo });
             return newToDo
         }
@@ -99,6 +87,6 @@ const resolvers = {
 // Creating neew GQL server running on port 4000, we pass in our schema, resolvers and our 
 // pub sub and database so that our resolvers can access them. 
 
-const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub, db, prisma } })
+const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub, prisma } })
 
 server.start(console.log("gql node server running on local host 4000"))

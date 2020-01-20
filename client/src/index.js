@@ -16,7 +16,7 @@ import { HttpLink } from 'apollo-link-http';
 // The http link is a terminating link that fetches GraphQL results from a GraphQL 
 // endpoint over an http connection
 const httpLink = new HttpLink({
-    uri: 'http://localhost:4000/'
+    uri: 'https://to-do-gql-prisma.herokuapp.com/'
 });
 
 // Allow you to send/receive subscriptions over a web socket
