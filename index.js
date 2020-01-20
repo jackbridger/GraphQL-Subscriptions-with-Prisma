@@ -1,3 +1,4 @@
+
 import { GraphQLServer, PubSub } from "graphql-yoga"
 // PubSub, is based on an event emitter. Provides us with publish and asyncIterator functions
 import { Prisma } from "prisma-binding";

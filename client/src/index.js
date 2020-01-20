@@ -21,7 +21,7 @@ const httpLink = new HttpLink({
 
 // Allow you to send/receive subscriptions over a web socket
 const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:4000/',
+    uri: 'ws://to-do-gql-prisma.herokuapp.com/',
     options: {
         reconnect: true
     }
