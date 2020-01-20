@@ -1,10 +1,10 @@
+// "start": "nodemon index.js --exec babel-node",
 {
   "name": "minimal-gql",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    // "start": "nodemon index.js --exec babel-node",
     "start": "node index.js",
     "heroku-postbuild": "cd client && npm i && npm start"
   },
