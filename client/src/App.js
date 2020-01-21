@@ -91,9 +91,11 @@ function App() {
 
       <form onSubmit={async (e) => {
         e.preventDefault();
-        // When form is submitted, create a new To do and reset form
-        await addToDoMutation({ variables: { title: inputValue } });
-        setInputValue("");
+        if (inputValue !== "") {
+          // When form is submitted, create a new To do and reset form
+          await addToDoMutation({ variables: { title: inputValue } });
+          setInputValue("");
+        }
       }}>
         <label>
           New To Do <br />
