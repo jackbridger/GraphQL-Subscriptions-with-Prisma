@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js --exec babel-node",
+    "heroku-postbuild": "NODE_ENV=production",
     "deploy-client": "git subtree push --prefix client/ heroku master"
   },
   "author": "",
