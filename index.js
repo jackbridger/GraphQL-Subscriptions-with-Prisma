@@ -1,4 +1,5 @@
 
+require('dotenv').config()
 import { GraphQLServer, PubSub } from "graphql-yoga"
 // PubSub, is based on an event emitter. Provides us with publish and asyncIterator functions
 import { Prisma } from "prisma-binding";
@@ -10,7 +11,7 @@ const TODOS_CHANGED = "TODOS_CHANGED"
 // set up the prisma binding (i.e. able to make queries to prisma)
 const prisma = new Prisma({
     typeDefs: "./prisma-to-do/generated/prisma.graphql",
-    endpoint: "https://eu1.prisma.sh/jack-bridger-418b15/demo/dev"
+    endpoint: process.env.PRISMA_ENDPOINT
 })
 
 
