@@ -1,4 +1,5 @@
 
+require('dotenv').config()
 import { GraphQLServer, PubSub } from "graphql-yoga"
 // PubSub, is based on an event emitter. Provides us with publish and asyncIterator functions
 import { Prisma } from "prisma-binding";
@@ -7,10 +8,10 @@ const pubsub = new PubSub();
 const TODOS_CHANGED = "TODOS_CHANGED"
 // Generate a random id for our ToDos
 
+// set up the prisma binding (i.e. able to make queries to prisma)
 const prisma = new Prisma({
     typeDefs: "./prisma-to-do/generated/prisma.graphql",
-    endpoint: "https://eu1.prisma.sh/jack-bridger-418b15/demo/dev"
-    // endpoint: "http://localhost:4466/"
+    endpoint: process.env.PRISMA_ENDPOINT
 })
 
 
@@ -30,9 +31,7 @@ type ToDo {
     id: ID!
     title: String!
 }
-
 `
-
 
 // How we handle graphQL operations from the front end
 const resolvers = {
@@ -45,14 +44,14 @@ const resolvers = {
         }
     },
     Mutation: {
+        // Create a new to do using prisma's methods that have access to the postgres db. 
         createToDo: async (parent, { title }, { prisma, pubsub }, info) => {
-
             const newToDo = await prisma.mutation.createToDo({
                 data: {
                     title
                 }
             })
-            console.log(newToDo)
+            // Notify that a new todo has been created, use the to do returned from database.
             pubsub.publish(TODOS_CHANGED, { ToDoChanged: newToDo });
             return newToDo
         }
@@ -68,20 +67,6 @@ const resolvers = {
 
             }
         }
-        // ToDoChanged: {
-        //     subscribe: newToDoSubscribe,
-        //     resolve: payload => {
-        //         console.log("payload is... !", payload)
-        //         console.log("payload is... !")
-        //         const parsed = JSON.parse(JSON.stringify(payload))
-        //         console.log("parsed", parsed.ToDoChanged)
-        // return {
-        //     id: "12312312312",
-        //     title: "test"
-        // }
-        //     }
-        // },
-
 
     }
 }
