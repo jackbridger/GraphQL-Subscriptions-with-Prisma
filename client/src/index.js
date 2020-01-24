@@ -14,9 +14,11 @@ import { HttpLink } from 'apollo-link-http';
 
 // Run locally vs in development
 // const httpURI = process.env.NODE_ENV === 'development' ? "http://localhost:4000" : 'https://to-do-gql-prisma.herokuapp.com/'
-const httpURI = process.env.HTTP_URI
+// const httpURI = 'https://to-do-gql-prisma.herokuapp.com/'
+const httpURI = process.env.REACT_APP_HTTP_URI
 // const wsURI = process.env.NODE_ENV === 'development' ? "ws://localhost:4000" : 'wss://to-do-gql-prisma.herokuapp.com/'
-const wsURI = process.env.WS_URI
+// const wsURI = 'wss://to-do-gql-prisma.herokuapp.com/'
+const wsURI = process.env.REACT_APP_WS_URI
 
 console.log(process.env.NODE_ENV)
 // The http link is a terminating link that fetches GraphQL results from a GraphQL 
